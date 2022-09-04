@@ -1,0 +1,21 @@
+body {
+}
+
+.logo{
+    text-align: center;
+}
+.info{
+    color: white;
+}
+
+.card {
+  background-image: linear-gradient(to right, #005AA7, #FFFDE4);
+}
+
+@media only screen and (min-width: 992px) {
+ .card {
+    height: 600px;
+
+  }
+
+}
