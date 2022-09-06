@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ITPHAcademyOMAWebAPI.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ITPHAcademyOMAWebAPI.Models;
 
 namespace ITPHAcademyOMAWebAPI.Controllers
 {
@@ -24,11 +25,10 @@ namespace ITPHAcademyOMAWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Models.Task>>> GetTasks()
         {
-          if (_context.Tasks == null)
-          {
-              return NotFound();
-          }
-
+            if (_context.Tasks == null)
+            {
+                return NotFound();
+            }
             var tasks = await _context.Tasks.Select(x => new
             {
                 x.Id,
@@ -43,7 +43,33 @@ namespace ITPHAcademyOMAWebAPI.Controllers
                 x.ProjectId
             }
 
-            ).ToListAsync();
+                ).ToListAsync();
+            return await _context.Tasks.ToListAsync();
+        }
+
+        // GET: api/Tasks
+        [HttpGet("{projectid}/tasks")]
+        public async Task<ActionResult<IEnumerable<Models.Task>>> GetTasksbyProject(int projectid)
+        {
+            if (_context.Tasks == null)
+            {
+                return NotFound();
+            }
+            var tasks = await _context.Tasks.Where(x => x.ProjectId == projectid).Select(x => new
+            {
+                x.Id,
+                x.IsDone,
+                comments = x.Comments.ToList(),
+                x.StartDate,
+                x.EndDate,
+                user = x.User.Name + " " + x.User.Surname,
+                x.UserId,
+                x.Description,
+                x.Project.Name,
+                x.ProjectId
+            }
+
+                ).ToListAsync();
             return await _context.Tasks.ToListAsync();
         }
 
@@ -51,18 +77,43 @@ namespace ITPHAcademyOMAWebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Models.Task>> GetTask(int id)
         {
-          if (_context.Tasks == null)
-          {
-              return NotFound();
-          }
-            var task = await _context.Tasks.FindAsync(id);
+            if (_context.Tasks == null)
+            {
+                return NotFound();
+            }
+
+            var task = await _context.Tasks.Where(x => x.Id == id).Select(x => new
+            {
+                x.Id,
+                x.IsDone,
+                comments = x.Comments.Select(c => new
+                {
+                    c.Id,
+                    c.Comment1,
+                    c.User.Name,
+                    c.User.Surname,
+                    c.UserId,
+                    c.User.Username,
+                    c.TaskId
+                }),
+                x.StartDate,
+                x.EndDate,
+                user = x.User.Name + " " + x.User.Surname,
+                x.UserId,
+                x.Description,
+                x.Project.Name,
+                x.ProjectId
+            }
+
+                ).FirstOrDefaultAsync();
+
 
             if (task == null)
             {
                 return NotFound();
             }
 
-            return task;
+            return Ok(task);
         }
 
         // PUT: api/Tasks/5
@@ -101,10 +152,10 @@ namespace ITPHAcademyOMAWebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Models.Task>> PostTask(Models.Task task)
         {
-          if (_context.Tasks == null)
-          {
-              return Problem("Entity set 'ITPHAcademyOMAContext.Tasks'  is null.");
-          }
+            if (_context.Tasks == null)
+            {
+                return Problem("Entity set 'ITPHAcademyOMAContext.Tasks'  is null.");
+            }
             _context.Tasks.Add(task);
             await _context.SaveChangesAsync();
 

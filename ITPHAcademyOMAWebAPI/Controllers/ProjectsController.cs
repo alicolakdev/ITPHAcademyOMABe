@@ -53,7 +53,7 @@ namespace ITPHAcademyOMAWebAPI.Controllers
                 return NotFound();
             }
 
-            var projectDetails = await _context.Projects.Where(p => p.Id == id)
+            var projectDetails = await _context.Projects
                 .Include(p => p.Customer)
                 .Include(p => p.Tasks).ThenInclude(t => t.Comments)
                 .Select(p => new Project
@@ -63,8 +63,7 @@ namespace ITPHAcademyOMAWebAPI.Controllers
                     Customer = new Customer { Id = p.Customer.Id, Name = p.Customer.Name, Surname = p.Customer.Surname, Username = p.Customer.Username, RoleId = p.Customer.RoleId },
                     Tasks = p.Tasks
 
-                })
-                .ToListAsync();
+                }).FirstOrDefaultAsync(p => p.Id == id);
 
             //var project = await _context.Projects.FindAsync(id);
 
