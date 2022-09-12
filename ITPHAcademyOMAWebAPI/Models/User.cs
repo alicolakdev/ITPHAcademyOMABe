@@ -22,5 +22,6 @@ namespace ITPHAcademyOMAWebAPI.Models
         public virtual Role Role { get; set; } = null!;
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Task> Tasks { get; set; }
+        public virtual ICollection<Project> Projects { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ITPHAcademyOMAWebAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
@@ -23,6 +24,7 @@ namespace ITPHAcademyOMAWebAPI.Controllers
 
         // GET: api/Tasks
         [HttpGet]
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<IEnumerable<Models.Task>>> GetTasks()
         {
             if (_context.Tasks == null)
@@ -49,6 +51,7 @@ namespace ITPHAcademyOMAWebAPI.Controllers
 
         // GET: api/Tasks
         [HttpGet("{projectid}/tasks")]
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<IEnumerable<Models.Task>>> GetTasksbyProject(int projectid)
         {
             if (_context.Tasks == null)
@@ -75,6 +78,7 @@ namespace ITPHAcademyOMAWebAPI.Controllers
 
         // GET: api/Tasks/5
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Models.Task>> GetTask(int id)
         {
             if (_context.Tasks == null)
@@ -119,6 +123,7 @@ namespace ITPHAcademyOMAWebAPI.Controllers
         // PUT: api/Tasks/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutTask(int id, Models.Task task)
         {
             if (id != task.Id)
@@ -150,6 +155,7 @@ namespace ITPHAcademyOMAWebAPI.Controllers
         // POST: api/Tasks
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Models.Task>> PostTask(Models.Task task)
         {
             if (_context.Tasks == null)
@@ -164,6 +170,7 @@ namespace ITPHAcademyOMAWebAPI.Controllers
 
         // DELETE: api/Tasks/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteTask(int id)
         {
             if (_context.Tasks == null)

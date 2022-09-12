@@ -14,7 +14,7 @@ namespace ITPHAcademyOMAWebAPI.Models
         public string Name { get; set; } = null!;
         public int CustomerId { get; set; }
 
-        public virtual Customer Customer { get; set; } = null!;
+        public virtual User Customer { get; set; } = null!;
         public virtual ICollection<Task> Tasks { get; set; }
     }
 }

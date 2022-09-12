@@ -17,7 +17,6 @@ namespace ITPHAcademyOMAWebAPI.Models
         }
 
         public virtual DbSet<Comment> Comments { get; set; } = null!;
-        public virtual DbSet<Customer> Customers { get; set; } = null!;
         public virtual DbSet<Project> Projects { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Task> Tasks { get; set; } = null!;
@@ -57,24 +56,7 @@ namespace ITPHAcademyOMAWebAPI.Models
                     .HasConstraintName("FK_Comment_User");
             });
 
-            modelBuilder.Entity<Customer>(entity =>
-            {
-                entity.ToTable("Customer");
 
-                entity.Property(e => e.Name).HasMaxLength(50);
-
-                entity.Property(e => e.Password).HasMaxLength(50);
-
-                entity.Property(e => e.Surname).HasMaxLength(50);
-
-                entity.Property(e => e.Username).HasMaxLength(50);
-
-                entity.HasOne(d => d.Role)
-                    .WithMany(p => p.Customers)
-                    .HasForeignKey(d => d.RoleId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Customer_Customer");
-            });
 
             modelBuilder.Entity<Project>(entity =>
             {

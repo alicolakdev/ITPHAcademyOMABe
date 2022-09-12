@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ITPHAcademyOMAWebAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ITPHAcademyOMAWebAPI.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ITPHAcademyOMAWebAPI.Controllers
 {
@@ -22,23 +23,25 @@ namespace ITPHAcademyOMAWebAPI.Controllers
 
         // GET: api/Comments
         [HttpGet]
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
         {
-          if (_context.Comments == null)
-          {
-              return NotFound();
-          }
+            if (_context.Comments == null)
+            {
+                return NotFound();
+            }
             return await _context.Comments.ToListAsync();
         }
 
         // GET: api/Comments/5
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Comment>> GetComment(int id)
         {
-          if (_context.Comments == null)
-          {
-              return NotFound();
-          }
+            if (_context.Comments == null)
+            {
+                return NotFound();
+            }
             var comment = await _context.Comments.FindAsync(id);
 
             if (comment == null)
@@ -52,6 +55,7 @@ namespace ITPHAcademyOMAWebAPI.Controllers
         // PUT: api/Comments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutComment(int id, Comment comment)
         {
             if (id != comment.Id)
@@ -83,12 +87,13 @@ namespace ITPHAcademyOMAWebAPI.Controllers
         // POST: api/Comments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Comment>> PostComment(Comment comment)
         {
-          if (_context.Comments == null)
-          {
-              return Problem("Entity set 'ITPHAcademyOMAContext.Comments'  is null.");
-          }
+            if (_context.Comments == null)
+            {
+                return Problem("Entity set 'ITPHAcademyOMAContext.Comments'  is null.");
+            }
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
 
@@ -97,6 +102,7 @@ namespace ITPHAcademyOMAWebAPI.Controllers
 
         // DELETE: api/Comments/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteComment(int id)
         {
             if (_context.Comments == null)

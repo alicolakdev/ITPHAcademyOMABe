@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ITPHAcademyOMAWebAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ITPHAcademyOMAWebAPI.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ITPHAcademyOMAWebAPI.Controllers
 {
@@ -22,12 +23,13 @@ namespace ITPHAcademyOMAWebAPI.Controllers
 
         // GET: api/Roles
         [HttpGet]
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
         {
-          if (_context.Roles == null)
-          {
-              return NotFound();
-          }
+            if (_context.Roles == null)
+            {
+                return NotFound();
+            }
             return await _context.Roles.ToListAsync();
         }
 
@@ -35,10 +37,10 @@ namespace ITPHAcademyOMAWebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Role>> GetRole(int id)
         {
-          if (_context.Roles == null)
-          {
-              return NotFound();
-          }
+            if (_context.Roles == null)
+            {
+                return NotFound();
+            }
             var role = await _context.Roles.FindAsync(id);
 
             if (role == null)
@@ -52,6 +54,7 @@ namespace ITPHAcademyOMAWebAPI.Controllers
         // PUT: api/Roles/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutRole(int id, Role role)
         {
             if (id != role.Id)
@@ -83,12 +86,13 @@ namespace ITPHAcademyOMAWebAPI.Controllers
         // POST: api/Roles
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Role>> PostRole(Role role)
         {
-          if (_context.Roles == null)
-          {
-              return Problem("Entity set 'ITPHAcademyOMAContext.Roles'  is null.");
-          }
+            if (_context.Roles == null)
+            {
+                return Problem("Entity set 'ITPHAcademyOMAContext.Roles'  is null.");
+            }
             _context.Roles.Add(role);
             await _context.SaveChangesAsync();
 
@@ -97,6 +101,7 @@ namespace ITPHAcademyOMAWebAPI.Controllers
 
         // DELETE: api/Roles/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteRole(int id)
         {
             if (_context.Roles == null)
